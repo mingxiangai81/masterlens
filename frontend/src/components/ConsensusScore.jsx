@@ -2,7 +2,7 @@ export default function ConsensusScore({ consensus, lang = 'zh' }) {
   return (
     <div className="bg-gradient-to-r from-[var(--gold)]/10 to-[var(--gold)]/5 border border-[var(--gold)]/20 rounded-2xl p-6 flex flex-wrap items-center justify-between gap-6">
       <div>
-        <div className="text-4xl font-serif font-black bg-gradient-to-r from-[var(--gold)] to-[var(--gold-light)] bg-clip-text text-transparent">
+        <div className="text-4xl font-black bg-gradient-to-r from-[var(--gold)] to-[var(--gold-light)] bg-clip-text text-transparent">
           {consensus.score} <span className="text-xl">/10</span>
         </div>
         <div className="text-sm text-[var(--gold)] mt-1">

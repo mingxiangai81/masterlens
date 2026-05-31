@@ -42,7 +42,7 @@ export default function Analyze() {
     <div className="pt-20 pb-16 max-w-6xl mx-auto px-6">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-serif font-bold text-white">{report.company_name}</h1>
+          <h1 className="text-3xl font-bold text-white">{report.company_name}</h1>
           <span className="font-mono text-gray-500">{report.ticker} · {report.exchange} · {report.currency} {report.price}</span>
         </div>
         <div className="text-right text-xs text-gray-500">
@@ -54,17 +54,17 @@ export default function Analyze() {
         <ConsensusScore consensus={report.consensus} lang={lang} />
       </div>
 
-      <h2 className="text-xl font-serif font-bold text-white mb-4">大师裁决</h2>
+      <h2 className="text-xl font-bold text-white mb-4">大师裁决</h2>
       <div className="mb-10">
         <VerdictGrid verdicts={report.master_verdicts} lang={lang} />
       </div>
 
-      <h2 className="text-xl font-serif font-bold text-white mb-4">华尔街深度报告</h2>
+      <h2 className="text-xl font-bold text-white mb-4">华尔街深度报告</h2>
       <div className="mb-10">
         <WallStreetReport report={report.wall_street_report} lang={lang} />
       </div>
 
-      <h2 className="text-xl font-serif font-bold text-white mb-4">交易计划</h2>
+      <h2 className="text-xl font-bold text-white mb-4">交易计划</h2>
       <TradePlan plan={report.trade_plan} lang={lang} />
 
       <div className="mt-10 text-xs text-gray-600">
@@ -72,7 +72,7 @@ export default function Analyze() {
         {report.data_sources.map((s, i) => (
           <span key={i} className="mr-4">{s.label} ({s.field})</span>
         ))}
-        <p className="mt-4 text-gray-600">本平台提供的所有分析内容均为教育性质，不构成投资建议。投资有风险，入市需谨慎。</p>
+        <p className="mt-4">本平台提供的所有分析内容均为教育性质，不构成投资建议。投资有风险，入市需谨慎。</p>
       </div>
     </div>
   );

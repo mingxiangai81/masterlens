@@ -6,7 +6,7 @@ export default function WallStreetReport({ report, lang = 'zh' }) {
       <Section title={lang === 'zh' ? '护城河分析' : 'Moat Analysis'} content={report.moat.details} score={report.moat.score} badge={report.moat.type} />
       <div className="bg-white/[0.03] border border-white/5 rounded-2xl p-6">
         <h3 className="text-white font-semibold mb-3">{lang === 'zh' ? 'DCF 估值' : 'DCF Valuation'}</h3>
-        <div className="grid grid-cols-3 gap-4 mb-3">
+        <div className="grid grid-cols-2 gap-4 mb-3">
           <div><div className="text-xl font-bold text-white">${report.dcf_valuation.fair_value}</div><div className="text-xs text-gray-500">{lang === 'zh' ? '公允价值' : 'Fair Value'}</div></div>
           <div><div className="text-xl font-bold text-emerald-400">{report.dcf_valuation.upside}</div><div className="text-xs text-gray-500">{lang === 'zh' ? '上行空间' : 'Upside'}</div></div>
         </div>
