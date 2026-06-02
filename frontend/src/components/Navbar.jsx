@@ -15,6 +15,9 @@ export default function Navbar() {
           <Link to="/pricing" className="text-sm text-gray-400 hover:text-[var(--gold)]">
             {lang === 'zh' ? '定价' : 'Pricing'}
           </Link>
+          <Link to="/feedback" className="text-sm text-gray-400 hover:text-[var(--gold)]">
+            {lang === 'zh' ? '反馈' : 'Feedback'}
+          </Link>
           <Link to="/dashboard" className="text-sm text-gray-400 hover:text-[var(--gold)]">
             {lang === 'zh' ? '面板' : 'Dashboard'}
           </Link>

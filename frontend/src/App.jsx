@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Pricing from './pages/Pricing';
 import Legal from './pages/Legal';
+import Feedback from './pages/Feedback';
 import Navbar from './components/Navbar';
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/legal" element={<Legal />} />
         <Route path="/legal/:section" element={<Legal />} />
+        <Route path="/feedback" element={<Feedback />} />
       </Routes>
     </BrowserRouter>
   );
