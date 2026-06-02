@@ -1,8 +1,17 @@
 from fastapi import APIRouter, HTTPException, Header
 from pydantic import BaseModel
+from typing import Optional
 from app.models.database import supabase
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+
+
+class RegisterRequest(BaseModel):
+    email: str
+    password: str
+    full_name: str
+    country: str
+    date_of_birth: str  # YYYY-MM-DD
 
 
 class AuthRequest(BaseModel):
@@ -17,13 +26,24 @@ class AuthResponse(BaseModel):
 
 
 @router.post("/register", response_model=AuthResponse)
-async def register(req: AuthRequest):
+async def register(req: RegisterRequest):
     try:
-        result = supabase.auth.sign_up({"email": req.email, "password": req.password})
+        result = supabase.auth.sign_up({
+            "email": req.email,
+            "password": req.password,
+            "options": {
+                "data": {
+                    "full_name": req.full_name,
+                    "display_name": req.full_name.split()[0],
+                    "country": req.country,
+                    "date_of_birth": req.date_of_birth,
+                }
+            }
+        })
         if result.user is None:
             raise HTTPException(status_code=400, detail="Registration failed")
         return AuthResponse(
-            access_token=result.session.access_token,
+            access_token=result.session.access_token if result.session else "",
             user_id=str(result.user.id),
             email=result.user.email,
         )

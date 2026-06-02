@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getWatchlist, getReports, removeFromWatchlist, addToWatchlist } from '../services/api';
+import TrialBanner from '../components/TrialBanner';
 
 export default function Dashboard() {
   const [watchlist, setWatchlist] = useState([]);
@@ -35,7 +36,8 @@ export default function Dashboard() {
 
   return (
     <div className="pt-20 pb-16 max-w-4xl mx-auto px-6">
-      <h1 className="text-2xl font-bold text-white mb-8">我的面板</h1>
+      <h1 className="text-2xl font-bold text-white mb-6">我的面板</h1>
+      <TrialBanner />
 
       <div className="mb-10">
         <h2 className="text-lg font-semibold text-[var(--gold)] mb-4">自选股</h2>

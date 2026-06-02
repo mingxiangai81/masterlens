@@ -1,10 +1,11 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { analyzeStock } from '../services/api';
 import VerdictGrid from '../components/VerdictGrid';
 import ConsensusScore from '../components/ConsensusScore';
 import WallStreetReport from '../components/WallStreetReport';
 import TradePlan from '../components/TradePlan';
+import TrialBanner from '../components/TrialBanner';
 
 export default function Analyze() {
   const { ticker } = useParams();
@@ -32,6 +33,27 @@ export default function Analyze() {
     );
   }
 
+  // Trial limit / expiry error
+  if (error && (error.includes('TRIAL_LIMIT') || error.includes('TRIAL_EXPIRED'))) {
+    const isExpired = error.includes('TRIAL_EXPIRED');
+    return (
+      <div className="pt-24 max-w-md mx-auto px-6 text-center">
+        <div className="text-5xl mb-4">{isExpired ? '⏰' : '🔒'}</div>
+        <h2 className="text-2xl font-bold text-white mb-3">
+          {isExpired ? '免费体验已到期' : '免费次数已用完'}
+        </h2>
+        <p className="text-gray-400 mb-6">
+          {isExpired
+            ? '你的 7 天免费体验已结束，升级到 Pro 继续使用无限查询。'
+            : '你已使用完 3 次免费查询，升级到 Pro 解锁无限报告。'}
+        </p>
+        <Link to="/pricing" className="inline-block bg-gradient-to-r from-[var(--gold)] to-[var(--gold-dim)] text-[var(--navy)] px-8 py-3 rounded-xl font-bold">
+          查看升级方案 →
+        </Link>
+      </div>
+    );
+  }
+
   if (error) {
     return <div className="pt-24 text-center text-red-400">{error}</div>;
   }
@@ -40,6 +62,7 @@ export default function Analyze() {
 
   return (
     <div className="pt-20 pb-16 max-w-6xl mx-auto px-6">
+      <TrialBanner />
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-white">{report.company_name}</h1>
