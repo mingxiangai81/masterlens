@@ -329,7 +329,8 @@ export default async function handler(request) {
         await userSupabase.from('reports').insert({
           user_id: authedUser.id,
           ticker,
-          report_json: report,
+          language: lang,
+          report_data: report,
         });
       } catch (_) { /* history is non-critical */ }
     }
