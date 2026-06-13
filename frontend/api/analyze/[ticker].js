@@ -1,10 +1,8 @@
 import { generateText } from 'ai';
-import { createClient } from '@supabase/supabase-js';
+import { createUserSupabaseClient } from '../_lib/supabase.js';
 
 export const config = { runtime: 'edge' };
 
-const SUPABASE_URL = 'https://hlraxyshjnmtqioonejh.supabase.co';
-const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhscmF4eXNoam5tdHFpb29uZWpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyOTIxMjUsImV4cCI6MjA5NTg2ODEyNX0.wJNtmypQ8ABb68oOaUbVJsNibHy7sC-KrDaN5p5KaKg';
 const TRIAL_LIMIT = 3;
 
 // ── Yahoo Finance data ──────────────────────────────────────────────────────
@@ -275,13 +273,15 @@ export default async function handler(request) {
   const token = request.headers.get('authorization')?.split(' ')[1];
 
   // Auth + trial check
+  let authedUser = null;
+  let userSupabase = null;
   if (token) {
     try {
-      const supabase = createClient(SUPABASE_URL, ANON_KEY, {
-        global: { headers: { Authorization: `Bearer ${token}` } },
-      });
+      const supabase = createUserSupabaseClient(token);
       const { data: { user } } = await supabase.auth.getUser(token);
       if (user) {
+        authedUser = user;
+        userSupabase = supabase;
         const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
         if (profile?.is_trial) {
           if (profile.trial_reports_used >= TRIAL_LIMIT) {
@@ -322,6 +322,17 @@ export default async function handler(request) {
 
     // Add generated_at timestamp
     report.generated_at = new Date().toISOString();
+
+    // Save to report history for logged-in users (best-effort, doesn't block response)
+    if (authedUser && userSupabase) {
+      try {
+        await userSupabase.from('reports').insert({
+          user_id: authedUser.id,
+          ticker,
+          report_json: report,
+        });
+      } catch (_) { /* history is non-critical */ }
+    }
 
     return Response.json(report, {
       headers: {
